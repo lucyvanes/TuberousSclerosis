@@ -29,11 +29,6 @@ t.test(SRS2_RRB ~ group, dat, var.equal=T)
 t.test(Conners_DSM4_Inattention ~ group, dat, var.equal=T)
 t.test(Conners_DSM4_HypImp ~ group, dat, var.equal=T) # no difference
 
-# Correlations
-#================
-cor(dat[dat$group=="TS", c("WASI_FSIQ", "SRS2_SC", "SRS2_RRB", "Conners_DSM4_Inattention", "Conners_DSM4_HypImp")])
-cor(dat[dat$group=="HC", c("WASI_FSIQ", "SRS2_SC", "SRS2_RRB", "Conners_DSM4_Inattention", "Conners_DSM4_HypImp")])
-
 
 #=======================================================================
 #                   Interrogate MRI results
@@ -42,19 +37,27 @@ cor(dat[dat$group=="HC", c("WASI_FSIQ", "SRS2_SC", "SRS2_RRB", "Conners_DSM4_Ina
 # FDC clusters
 #==============
 # R SLF-I
+# png( "Effect1.jpeg",  width = 6, height = 6, units = 'in', res = 300)
 ggplot(dat, aes(y=FDC_cluster1_fdc, x=group)) + 
   geom_boxplot() +
-  xlab("Group") + ylab("Mean FDC")
+  xlab("Group") + ylab("Mean FDC") +
+  theme(axis.text=element_text(size=20, face="bold"),
+        axis.title=element_text(size=20,face="bold"))
+# dev.off()
 
 # L ILF
 ggplot(dat, aes(y=FDC_cluster2_fdc, x=group)) + 
   geom_boxplot() +
-  xlab("Group") + ylab("Mean FDC")
+  xlab("Group") + ylab("Mean FDC") +
+  theme(axis.text=element_text(size=20, face="bold"),
+        axis.title=element_text(size=20,face="bold"))
 
 # L ILF
 ggplot(dat, aes(y=FDC_cluster3_fdc, x=group)) + 
   geom_boxplot() +
-  xlab("Group") + ylab("Mean FDC")
+  xlab("Group") + ylab("Mean FDC") +
+  theme(axis.text=element_text(size=20, face="bold"),
+        axis.title=element_text(size=20,face="bold"))
 
 
 # FD cluster
@@ -62,13 +65,17 @@ ggplot(dat, aes(y=FDC_cluster3_fdc, x=group)) +
 
 ggplot(dat, aes(y=FD_cluster1, x=group)) + 
   geom_boxplot() +
-  xlab("Group") + ylab("Mean FD")
+  xlab("Group") + ylab("Mean FD") +
+  theme(axis.text=element_text(size=20, face="bold"),
+        axis.title=element_text(size=20,face="bold"))
 
 # log FC cluster
 #==================
 ggplot(dat, aes(y=FC_cluster1, x=group)) + 
   geom_boxplot() +
-  xlab("Group") + ylab("Mean (log) FC")
+  xlab("Group") + ylab("Mean (log) FC") +
+  theme(axis.text=element_text(size=20, face="bold"),
+        axis.title=element_text(size=20,face="bold"))
 
 
 #========================================================
@@ -105,15 +112,19 @@ for (v in vars){
 # SRS-SCI and SRS-RRB --> significant effect for FDC in R SLF (cluster 1):
 #=========================================================================
 
-fit1 <- lm(SRS2_SC ~ FDC_cluster1_fdc + age + sex + Scanner_id, dat[dat$group=="TS",])
+fit1 <- lm(SRS2_SC ~ FDC_cluster1_fdc + age + sex + Scanner_id, dat[dat$group=="TSC",])
 summary(fit1)
-effect_plot(fit1, pred=FDC_cluster1_fdc, plot.points=T, interval=T, 
-            partial.residuals=T, y.label="SRS SCI (partial residuals)")
+effect_plot(fit1, pred=FDC_cluster1_fdc, plot.points=T, interval=T, point.size=3,
+            partial.residuals=T, y.label="SRS SCI (partial residuals)", x.label="FDC") +
+  theme(axis.text=element_text(size=20, face="bold"),
+        axis.title=element_text(size=20,face="bold"))
 
-fit2 <- lm(SRS2_RRB ~ FDC_cluster1_fdc + age + sex + Scanner_id, dat[dat$group=="TS",])
+fit2 <- lm(SRS2_RRB ~ FDC_cluster1_fdc + age + sex + Scanner_id, dat[dat$group=="TSC",])
 summary(fit2)
-effect_plot(fit2, pred=FDC_cluster1_fdc, plot.points=T, interval=T, 
-            partial.residuals=T, y.label="SRS RRB (partial residuals)")
+effect_plot(fit2, pred=FDC_cluster1_fdc, plot.points=T, interval=T,  point.size=3,
+            partial.residuals=T, y.label="SRS RRB (partial residuals)", x.label="FDC") +
+  theme(axis.text=element_text(size=20, face="bold"),
+        axis.title=element_text(size=20,face="bold"))
 
 
 
