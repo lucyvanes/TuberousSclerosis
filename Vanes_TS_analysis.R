@@ -1,8 +1,7 @@
 # 27/01/2022
 # Lucy Vanes
 # Analysis code for:
-# "White matter disruptions related to inattention and 
-# autism spectrum symptoms in tuberous sclerosis complex"
+# "White matter disruptions related to inattention and autism spectrum symptoms in tuberous sclerosis complex"
 
 
 
@@ -32,6 +31,8 @@ t.test(Conners_DSM4_HypImp ~ group, dat, var.equal=T) # no difference
 
 # Correlations
 #================
+cor(dat[dat$group=="TS", c("WASI_FSIQ", "SRS2_SC", "SRS2_RRB", "Conners_DSM4_Inattention", "Conners_DSM4_HypImp")])
+cor(dat[dat$group=="HC", c("WASI_FSIQ", "SRS2_SC", "SRS2_RRB", "Conners_DSM4_Inattention", "Conners_DSM4_HypImp")])
 
 
 #=======================================================================
