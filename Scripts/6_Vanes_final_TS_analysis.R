@@ -19,14 +19,23 @@ dat$sex <- factor(dat$sex)
 
 aggregate(id ~ group, dat, length)
 
-# Behavioural group comparisons
-#=========================================
+# Behavioural group comparisons (+ sensitivity analyses excluding medicated participants)
+#========================================================================================
 
 summary(lm(WASI_FSIQ ~ group + age + sex, dat))
+summary(lm(WASI_FSIQ ~ group + age + sex, dat[dat$med==0,]))
+
 summary(lm(SRS2_SC ~ group + age + sex, dat))
+summary(lm(SRS2_SC ~ group + age + sex, dat[dat$med==0,]))
+
 summary(lm(SRS2_RRB ~ group + age + sex, dat))
+summary(lm(SRS2_RRB ~ group + age + sex, dat[dat$med==0,]))
+
 summary(lm(Conners_DSM4_Inattention ~ group + age + sex, dat))
+summary(lm(Conners_DSM4_Inattention ~ group + age + sex, dat[dat$med==0,]))
+
 summary(lm(Conners_DSM4_HypImp ~ group + age + sex, dat)) # no difference
+summary(lm(Conners_DSM4_HypImp ~ group + age + sex, dat[dat$med==0,]))
 
 
 #=======================================================================
@@ -47,8 +56,9 @@ ggplot(dat, aes(y=FDC_cluster1_fdc, x=group)) +
   ggtitle("Right SLF-I") 
 
 # dev.off()
+summary(lm(FDC_cluster1_fdc ~ group + age + sex, dat[dat$med==0,]))
 summary(lm(FDC_cluster1_fdc ~ group + age + sex + TIV, dat))
-summary(lm(FDC_cluster1_fdc ~ group + age + sex + motion, dat))
+summary(lm(FDC_cluster1_fdc ~ group + age + sex + abs_motion, dat))
 
 # R ILF
 ggplot(dat, aes(y=FDC_cluster2_fdc, x=group)) + 
@@ -60,8 +70,9 @@ ggplot(dat, aes(y=FDC_cluster2_fdc, x=group)) +
         plot.title = element_text(size = 30, face = "bold")) +
 ggtitle("Right ILF") 
 
+summary(lm(FDC_cluster2_fdc ~ group + age + sex, dat[dat$med==0,]))
 summary(lm(FDC_cluster2_fdc ~ group + age + sex + TIV, dat))
-summary(lm(FDC_cluster2_fdc ~ group + age + sex + motion, dat))
+summary(lm(FDC_cluster2_fdc ~ group + age + sex + abs_motion, dat))
 
 
 # L ILF
@@ -74,9 +85,9 @@ ggplot(dat, aes(y=FDC_cluster3_fdc, x=group)) +
         plot.title = element_text(size = 30, face = "bold")) +
       ggtitle("Left ILF") 
         
-
+summary(lm(FDC_cluster3_fdc ~ group + age + sex, dat[dat$med==0,]))
 summary(lm(FDC_cluster3_fdc ~ group + age + sex + TIV, dat))
-summary(lm(FDC_cluster3_fdc ~ group + age + sex + motion, dat))
+summary(lm(FDC_cluster3_fdc ~ group + age + sex + abs_motion, dat))
 
 
 # FD cluster
@@ -91,8 +102,9 @@ ggplot(dat, aes(y=FD_cluster1, x=group)) +
         plot.title = element_text(size = 30, face = "bold")) +
   ggtitle("Tapetum") 
 
+summary(lm(FD_cluster1 ~ group + age + sex, dat[dat$med==0,]))
 summary(lm(FD_cluster1 ~ group + age + sex + TIV, dat))
-summary(lm(FD_cluster1 ~ group + age + sex + motion, dat))
+summary(lm(FD_cluster1 ~ group + age + sex + abs_motion, dat))
 
 # log FC cluster
 #==================
@@ -106,9 +118,9 @@ ggplot(dat, aes(y=FC_cluster1, x=group)) +
   ggtitle("Right SLF-III") 
 
   
-
+summary(lm(FC_cluster1 ~ group + age + sex, dat[dat$med==0,]))
 summary(lm(FC_cluster1 ~ group + age + sex + TIV, dat))
-summary(lm(FC_cluster1 ~ group + age + sex + motion, dat))
+summary(lm(FC_cluster1 ~ group + age + sex + rel_motion, dat))
 
 
 #========================================================
@@ -159,15 +171,15 @@ for (v in vars){
   print(v)
   print("===========================", quote=F)
   print("##        FDC           ##")
-  print(summary(lm(as.formula(paste(v, "~  FDC_cluster1_fdc+ age + sex + Scanner_id + motion")), dat[dat$group=="TSC",])))
-  print(summary(lm(as.formula(paste(v, "~  FDC_cluster2_fdc+ age + sex + Scanner_id + motion")), dat[dat$group=="TSC",])))
-  print(summary(lm(as.formula(paste(v, "~  FDC_cluster3_fdc+ age + sex + Scanner_id + motion")), dat[dat$group=="TSC",])))
+  print(summary(lm(as.formula(paste(v, "~  FDC_cluster1_fdc+ age + sex + Scanner_id + rel_motion")), dat[dat$group=="TSC",])))
+  print(summary(lm(as.formula(paste(v, "~  FDC_cluster2_fdc+ age + sex + Scanner_id + rel_motion")), dat[dat$group=="TSC",])))
+  print(summary(lm(as.formula(paste(v, "~  FDC_cluster3_fdc+ age + sex + Scanner_id + rel_motion")), dat[dat$group=="TSC",])))
   
   print("##        FD           ##")
-  print(summary(lm(as.formula(paste(v, "~  FD_cluster1 + age + sex + Scanner_id + motion")), dat[dat$group=="TSC",])))
+  print(summary(lm(as.formula(paste(v, "~  FD_cluster1 + age + sex + Scanner_id + rel_motion")), dat[dat$group=="TSC",])))
   
   print("##        Log FC           ##")
-  print(summary(lm(as.formula(paste(v, "~  FC_cluster1 + age + sex + Scanner_id + motion")), dat[dat$group=="TSC",])))
+  print(summary(lm(as.formula(paste(v, "~  FC_cluster1 + age + sex + Scanner_id + rel_motion")), dat[dat$group=="TSC",])))
 }
 
 # adding medication status
